@@ -3,15 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrysonNet", "BrysonNet.csproj", "{8688EA52-9F5C-469D-AEB4-F61398DB6353}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrysonNetTest", "BrysonNetTest\BrysonNetTest.csproj", "{C32F6D70-15C9-41E6-849D-FDF1C0BA2AC9}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CE0D68B6-8E27-43AE-BCC3-619E1F6B4DA0}"
-	ProjectSection(SolutionItems) = preProject
-		BrysonNet.vsmdi = BrysonNet.vsmdi
-		Local.testsettings = Local.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = BrysonNet.vsmdi

@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * 
+ * (c) Oleksandr Babii 2012
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -159,12 +165,7 @@ namespace BrysonNet
         {
             if (input.GetLength(0) != _inputNeuronCount || desiredOutput.GetLength(0) != _outputNeuronCount)
                 throw new ArgumentException();
-            
-
         }
-
-        
-
 
         private void RandomizeWeights()
         {
