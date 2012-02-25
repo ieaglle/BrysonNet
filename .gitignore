@@ -1,0 +1,6 @@
+bin/
+obj/
+_ReSharper*/
+*.dotCover
+NeuralNetwork1.cs
+
