@@ -16,6 +16,7 @@ namespace BrysonNet
 
         private double _bias;
         private Random _random;
+        private int _epoch;
 
         #region Neuron and layer counts
 
@@ -29,6 +30,7 @@ namespace BrysonNet
         private Dictionary<int, double[,]> _weight;
         private Dictionary<int, double[,]> _weightChange;
         private Dictionary<int, double[]> _signal;
+        private Dictionary<int, double[]> _error;
          
         #endregion
 
@@ -44,6 +46,12 @@ namespace BrysonNet
         {
             get { return _signal[_hiddenLayerCount + 1]; }
             set { _signal[_hiddenLayerCount + 2] = value; }
+        }
+
+        public int Epoch
+        {
+            get { return _epoch; }
+            set { _epoch = value; }
         }
 
         #endregion
@@ -101,6 +109,7 @@ namespace BrysonNet
         public void Initialize()
         {
             _random = new Random();
+            _epoch = 0;
 
             #region Weights initialization
 
@@ -118,16 +127,20 @@ namespace BrysonNet
                               new double[_hiddenNeuronCount[_hiddenLayerCount - 1],_outputNeuronCount]);
             #endregion
 
-            #region Signals initialization
+            #region Signals and errors initialization
 
-            _signal = new Dictionary<int, double[]>(2 + _hiddenLayerCount); //input + output + all hidden
+            //amount of layers = input + output + all hidden
+            _signal = new Dictionary<int, double[]>(2 + _hiddenLayerCount);
+            _error = new Dictionary<int, double[]>(2 + _hiddenLayerCount);
             _signal.Add(0, new double[_inputNeuronCount]);
+            _error.Add(0, new double[_inputNeuronCount]);
             for (int i = 0; i < _hiddenLayerCount; i++)
             {
-                _signal.Add(i+1, new double[_hiddenNeuronCount[i]]);
+                _signal.Add(i + 1, new double[_hiddenNeuronCount[i]]);
+                _error.Add(i + 1, new double[_hiddenNeuronCount[i]]);
             }
             _signal.Add(_signal.Count, new double[_outputNeuronCount]);
-
+            _error.Add(_error.Count, new double[_outputNeuronCount]);
             #endregion
         }
 
@@ -136,7 +149,7 @@ namespace BrysonNet
         /// </summary>
         public void Pulse()
         {
-            RandomizeWeights();
+            //RandomizeWeights();
             //for all layers
             for (int layer = 1; layer < _hiddenLayerCount + 2; layer++) //plus input and output layers
             {
@@ -153,6 +166,7 @@ namespace BrysonNet
                     _signal[layer][i] = layer == 1 ? Sigmoid(temp + _bias) : Sigmoid(temp); 
                 }
             }
+            _epoch++;
         }
 
         /// <summary>
@@ -160,15 +174,69 @@ namespace BrysonNet
         /// </summary>
         /// <param name="input">Input values.</param>
         /// <param name="desiredOutput">Desired output values.</param>
-        /// <param name="learningRate">Learning rate.</param>
-        public void Train(double[][] input, double[][] desiredOutput, double learningRate)
+        /// <param name="precision">How precise network should be (if equal 0.1 network will stop when |desired output - actual output| is less than 0.1 ).</param>
+        /// <param name="learningRate">How fast network is learning.</param>
+        public void Train(double[][] input, double[][] desiredOutput, double precision, double learningRate = 1)
         {
-            if (input.GetLength(0) != _inputNeuronCount || desiredOutput.GetLength(0) != _outputNeuronCount)
-                throw new ArgumentException();
+            if (input[0].Count() != _inputNeuronCount || desiredOutput[0].Count() != _outputNeuronCount)
+                throw new Exception("Input or output values number is invalid.");
+
+            bool go = true;
+            do
+            {
+                for (int curr = 0; curr < input.Count(); curr++)
+                {
+                    double[] currInput = input[curr];
+                    double[] currDesiredOutput = desiredOutput[curr];
+
+                    InputSignal = currInput;
+                    Pulse();
+                    // calculating errors of output neurons
+                    for (int i = 0; i < _outputNeuronCount; i++)
+                    {
+                        _error[_hiddenLayerCount + 1][i] = _signal[_hiddenLayerCount + 1][i]*
+                                                           (1.0 - _signal[_hiddenLayerCount + 1][i])*
+                                                           (currDesiredOutput[i] - _signal[_hiddenLayerCount + 1][i]);
+                    }
+                    //calculating all errors and wight changes
+                    for (int layer = _hiddenLayerCount + 1; layer > 0; layer--)
+                    {
+                        for (int i = 0; i < _signal[layer - 1].Count(); i++)
+                        {
+                            double temp = 0;
+                            for (int j = 0; j < _signal[layer].Count(); j++)
+                            {
+                                double delta = learningRate*_error[layer][j]*_signal[layer - 1][i];
+                                // adding previous weight change multiplied by a constant 
+                                // to prevent from finding local minima
+                                _weight[layer - 1][i, j] += delta + 0.5*_weightChange[layer - 1][i, j];
+                                _weightChange[layer - 1][i, j] = delta;
+
+                                temp += _error[layer][j]*_weight[layer - 1][i, j];
+                            }
+                            _error[layer - 1][i] = _signal[layer - 1][i]*(1.0 - _signal[layer - 1][i])*temp;
+                        }
+                    }
+                    // check if network is trained enought
+                    for (int i = 0; i < _outputNeuronCount; i++)
+                    {
+                        if (Math.Abs(currDesiredOutput[i] - OutputSignal[i]) <= precision)
+                            go = false;
+                    }
+                }
+            } while (go);
         }
 
-        private void RandomizeWeights()
+        /// <summary>
+        /// Randomizing all weights.
+        /// </summary>
+        /// <param name="minValue">Minimum weight value.</param>
+        /// <param name="maxValue">Maximum weight value.</param>
+        public void RandomizeWeights(double minValue = 0, double maxValue = 1)
         {
+            if (maxValue <= minValue)
+                throw new Exception("Maximum has to be greater then minimum, didn't you know?");
+
             _bias = _random.NextDouble();
 
             for (int layer = 0; layer < _hiddenLayerCount + 1; layer++)
@@ -177,7 +245,7 @@ namespace BrysonNet
                 {
                     for (int j = 0; j < _weight[layer].GetLength(1); j++)
                     {
-                        _weight[layer][i, j] = _random.NextDouble();
+                        _weight[layer][i, j] = _random.NextDouble() * (maxValue - minValue) + minValue;
                     }
                 }
             }
@@ -213,6 +281,5 @@ namespace BrysonNet
         {
             return 1/(1 + Math.Exp(-net));
         }
-
     }
 }
