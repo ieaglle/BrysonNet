@@ -1,16 +1,17 @@
 ﻿/*
- * 
  * (c) Oleksandr Babii 2012
- * 
  */
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+using System.IO;
+using System.Globalization;
 
 namespace BrysonNet
 {
-    public class NeuralNetwork
+    public class NeuralNetwork : INeuralNetwork
     {
         #region Private fields
 
@@ -20,10 +21,10 @@ namespace BrysonNet
 
         #region Neuron and layer counts
 
-        private readonly int _inputNeuronCount;
-        private readonly int _outputNeuronCount;
-        private readonly int[] _hiddenNeuronCount;
-        private readonly int _hiddenLayerCount;
+        private int _inputNeuronCount;
+        private int _outputNeuronCount;
+        private int[] _hiddenNeuronCount;
+        private int _hiddenLayerCount;
 
         #endregion
 
@@ -57,6 +58,11 @@ namespace BrysonNet
         #endregion
 
         #region Constructors
+
+        public NeuralNetwork()
+        {
+            
+        }
 
         /// <summary>
         /// 
@@ -181,22 +187,36 @@ namespace BrysonNet
             if (input[0].Count() != _inputNeuronCount || desiredOutput[0].Count() != _outputNeuronCount)
                 throw new Exception("Input or output values number is invalid.");
 
+            // maximum epoches allowed
+            const int maxEpoches = 500000;
             bool go = true;
             do
             {
+                // check for infinite loop
+                if (_epoch >= maxEpoches)
+                    throw new Exception("Training takes too long. Try to change network architecture.");
+
+                double[][] results = new double[input.Count()][];
                 for (int curr = 0; curr < input.Count(); curr++)
                 {
                     double[] currInput = input[curr];
                     double[] currDesiredOutput = desiredOutput[curr];
-
-                    InputSignal = currInput;
+                    // setting input signals
+                    //InputSignal = currInput;
+                    for (int i = 0; i < _inputNeuronCount; i++)
+                    {
+                        _signal[0][i] = currInput[i];
+                    }
+                    // executing network
                     Pulse();
+                    results[curr] = new double[_outputNeuronCount];
                     // calculating errors of output neurons
                     for (int i = 0; i < _outputNeuronCount; i++)
                     {
                         _error[_hiddenLayerCount + 1][i] = _signal[_hiddenLayerCount + 1][i]*
                                                            (1.0 - _signal[_hiddenLayerCount + 1][i])*
                                                            (currDesiredOutput[i] - _signal[_hiddenLayerCount + 1][i]);
+                        results[curr][i] = _signal[_hiddenLayerCount + 1][i];
                     }
                     //calculating all errors and wight changes
                     for (int layer = _hiddenLayerCount + 1; layer > 0; layer--)
@@ -211,19 +231,22 @@ namespace BrysonNet
                                 // to prevent from finding local minima
                                 _weight[layer - 1][i, j] += delta + 0.5*_weightChange[layer - 1][i, j];
                                 _weightChange[layer - 1][i, j] = delta;
-
                                 temp += _error[layer][j]*_weight[layer - 1][i, j];
                             }
                             _error[layer - 1][i] = _signal[layer - 1][i]*(1.0 - _signal[layer - 1][i])*temp;
                         }
                     }
-                    // check if network is trained enought
-                    for (int i = 0; i < _outputNeuronCount; i++)
+                }
+
+                // check if network is trained enought
+                for (int i = 0; i < input.Count(); i++)
+                {
+                    for (int j = 0; j < _outputNeuronCount; j++)
                     {
-                        if (Math.Abs(currDesiredOutput[i] - OutputSignal[i]) <= precision)
-                            go = false;
+                        go = go && Math.Abs(desiredOutput[i][j] - results[i][j]) >= precision;
                     }
                 }
+
             } while (go);
         }
 
@@ -280,6 +303,95 @@ namespace BrysonNet
         private double Sigmoid(double net)
         {
             return 1/(1 + Math.Exp(-net));
+        }
+
+        /// <summary>
+        /// Saving current network's state.
+        /// </summary>
+        /// <param name="filename">Name of the file for storing network's state. Will be "filename".xml.</param>
+        public void Save(string filename)
+        {
+            XDocument doc = new XDocument(new XElement("root"));
+            doc.Root.Add(
+                new XAttribute("inputneurons", _inputNeuronCount),
+                new XAttribute("hiddenlayers", _hiddenLayerCount));
+
+            for (int i = 0; i < _hiddenLayerCount; i++)
+            {
+                doc.Root.Add(new XAttribute("hidden"+i, _hiddenNeuronCount[i]));
+            }
+            doc.Root.Add(new XAttribute("outputneurons", _outputNeuronCount));
+
+            XElement inputWeights = new XElement("weights");
+            for (int layer = 0; layer < _hiddenLayerCount+1; layer++)
+            {
+                for (int i = 0; i < _weight[layer].GetLength(0); i++)
+                {
+                    for (int j = 0; j < _weight[layer].GetLength(1); j++)
+                    {
+                        XElement element = new XElement("weight");
+                        element.Add(
+                            new XAttribute("layer", layer),
+                            new XAttribute("from", i),
+                            new XAttribute("to", j),
+                            new XAttribute("value", _weight[layer][i, j]),
+                            new XAttribute("weightchange", _weightChange[layer][i,j]));
+                        inputWeights.Add(element);
+                    }
+                }
+            }
+            doc.Root.Add(
+                new XElement(inputWeights));
+            doc.Save(filename);
+        }
+
+        /// <summary>
+        /// Loading network from a specified file.
+        /// </summary>
+        /// <param name="filename">Name of the file.</param>
+        public void Load(string filename)
+        {
+            if (String.IsNullOrWhiteSpace(filename) || !File.Exists(filename))
+                throw new Exception("File path is invalid");
+
+            using (FileStream stream = new FileStream(filename, FileMode.Open))
+            {
+                try
+                {
+                    XDocument doc = XDocument.Load(stream);
+                    int inputNeuronCount = int.Parse(doc.Root.Attribute("inputneurons").Value);
+                    int hiddenLayerCount = int.Parse(doc.Root.Attribute("hiddenlayers").Value);
+                    int[] hiddenNeuronCount = new int[hiddenLayerCount];
+                    for (int i = 0; i < hiddenLayerCount; i++)
+                    {
+                        hiddenNeuronCount[i] = int.Parse(doc.Root.Attribute("hidden" + i).Value);
+                    }
+                    int outputNeuronCount = int.Parse(doc.Root.Attribute("outputneurons").Value);
+
+                    _inputNeuronCount = inputNeuronCount;
+                    _hiddenLayerCount = hiddenLayerCount;
+                    _hiddenNeuronCount = hiddenNeuronCount;
+                    _outputNeuronCount = outputNeuronCount;
+                    Initialize();
+                    IEnumerable<XElement> weights = doc.Element("root").Elements("weights");
+                    foreach (var xElement in weights.Elements("weight"))
+                    {
+                        int layer = int.Parse(xElement.Attribute("layer").Value);
+                        int from = int.Parse(xElement.Attribute("from").Value);
+                        int to = int.Parse(xElement.Attribute("to").Value);
+                        double weight = double.Parse(xElement.Attribute("value").Value, CultureInfo.InvariantCulture);
+                        double weightChange = double.Parse(xElement.Attribute("weightchange").Value,
+                                                           CultureInfo.InvariantCulture);
+                        _weight[layer][from, to] = weight;
+                        // probably not necessary, unless future training will be performed
+                        _weightChange[layer][from, to] = weightChange;
+                    }
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Project file is corrupted.");
+                }
+            }
         }
     }
 }

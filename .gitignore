@@ -1,6 +1,8 @@
-bin/
-obj/
-_ReSharper*/
-*.dotCover
-NeuralNetwork1.cs
+BrysonNet/bin/
+BrysonNet/obj/
+BrysonNet/_ReSharper*/
+BrysonNet/*.dotCover
+BrysonNet/NeuralNetwork1.cs
+BrysonNetUsage/bin/
+BrysonNetUsage/obj/
 
