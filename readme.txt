@@ -14,19 +14,31 @@ Current features:
  - saving/loading network's state to XML file;
  - small knowledge base is provided (for now only XOR :)).
 
+
 TODO's:
- [x] add weight ranges for randomizing (e.g. -1 to 1, or -0,5 to 0,5 etc.);
- [x] add error and previous changes arrays;
- [x] implement back propagation training (more in future);
- [x] add some protection from infinite loop while training;
- [x] move NeuralNetwork class to external assembly to make it as a dll, not a console application;
- [x] add possibility to save current state in XML file;
- [x] add possibility to load network from a XML file;
- [ ] add other network types such as Hopfield network or even Recurrent neural network;
- [ ] add multithreading;
- [ ] add an option to save network to SQLite or similar.
+ -FeedForward neural network:
+   [x] add weight ranges for randomizing (e.g. -1 to 1, or -0,5 to 0,5 etc.);
+   [x] add error and previous changes arrays;
+   [x] implement back propagation training (more in future);
+   [x] add some protection from infinite loop while training;
+   [x] add possibility to save current state in XML file;
+   [x] add possibility to load network from a XML file;
+ -General: 
+   [x] move NeuralNetwork class to external assembly to make it as a dll, not a console application;
+   [ ] add multithreading;
+   [ ] decide to use SQLite or similar;
+   [ ] implement Self Organizing Map (SOM);
+   [ ] implement Hopfield Neural Network;
+   [ ] implement Simple Recurrent Network (SRN) Elman Style;
+   [ ] implement SRN Jordan Style;
+   [ ] implement SRN Self Organizing Map;
+   [ ] implement Feedforward Radial Basis Function (RBF) Network.
+
 
 Releases history:
+
+vNext
+ - renamed "NeuralNetwork" with a proper name "FeedForwardNeuralNetwork";
 
 27-02-2012
  - changed project output type to Class Library;
