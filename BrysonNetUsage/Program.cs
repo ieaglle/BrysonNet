@@ -4,14 +4,13 @@ using BrysonNet;
 
 namespace BrysonNetUsage
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            /*
-            NeuralNetwork net = new NeuralNetwork(2, 2, 1);
+            FeedForwardNeuralNetwork net = new FeedForwardNeuralNetwork(2, 40, 40, 1);
             net.Initialize();
-            net.RandomizeWeights();
+            net.RandomizeWeights(-1);
 
             double[][] input = new[]
                                    {
@@ -27,8 +26,13 @@ namespace BrysonNetUsage
                                        new[] {.9},
                                        new[] {.1}
                                    };
-            net.Train(input, output, 0.0001);
-            net.Save("XOR.xml");
+
+            DateTime start = DateTime.Now;
+            net.Train(input, output, 0.0001, .5);
+
+            TimeSpan dur = DateTime.Now - start;
+            Console.WriteLine(dur);
+            //net.Save("XOR.xml");
             
             Console.Out.WriteLine("\nPassed epoches: " + net.Epoch);
 
@@ -47,27 +51,27 @@ namespace BrysonNetUsage
             net.InputSignal = new[] { .9, .9 };
             net.Pulse();
             Console.Out.WriteLine("Output: {0}", net.OutputSignal[0]);
-            */
             
-            NeuralNetwork net = new NeuralNetwork();
+            
+            /*FeedForwardNeuralNetwork net = new FeedForwardNeuralNetwork();
             net.Load("XOR.xml");
 
-            net.InputSignal = new[] { .1, .1 };
+            net.InputSignal = new[] {.1, .1};
             net.Pulse();
             Console.Out.WriteLine("Output: {0}", net.OutputSignal[0]);
 
-            net.InputSignal = new[] { .1, .9 };
+            net.InputSignal = new[] {.1, .9};
             net.Pulse();
             Console.Out.WriteLine("Output: {0}", net.OutputSignal[0]);
 
-            net.InputSignal = new[] { .9, .1 };
+            net.InputSignal = new[] {.9, .1};
             net.Pulse();
             Console.Out.WriteLine("Output: {0}", net.OutputSignal[0]);
 
-            net.InputSignal = new[] { .9, .9 };
+            net.InputSignal = new[] {.9, .9};
             net.Pulse();
             Console.Out.WriteLine("Output: {0}", net.OutputSignal[0]);
-            
+            */
             Console.Read();
         }
     }

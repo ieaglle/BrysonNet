@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root inputneurons="2" hiddenlayers="2" hidden0="4" hidden1="4" outputneurons="1">
+  <weights>
+    <weight layer="0" from="0" to="0" value="-3.592368941088623" weightchange="3.3325847736978318E-07" />
+    <weight layer="0" from="0" to="1" value="2.735345317064704" weightchange="-3.3271850803747985E-07" />
+    <weight layer="0" from="0" to="2" value="-3.7490018350778196" weightchange="3.1211296566804209E-07" />
+    <weight layer="0" from="0" to="3" value="1.93586037764016" weightchange="3.12855796192023E-06" />
+    <weight layer="0" from="1" to="0" value="-3.44512363449092" weightchange="3.3325847736978318E-07" />
+    <weight layer="0" from="1" to="1" value="2.7244162285389191" weightchange="-3.3271850803747985E-07" />
+    <weight layer="0" from="1" to="2" value="-3.7616950705317875" weightchange="3.1211296566804209E-07" />
+    <weight layer="0" from="1" to="3" value="1.6243394825402429" weightchange="3.12855796192023E-06" />
+    <weight layer="1" from="0" to="0" value="-4.7900599714021519" weightchange="-3.0492937323381155E-08" />
+    <weight layer="1" from="0" to="1" value="0.14179750959500367" weightchange="1.4128673447042402E-07" />
+    <weight layer="1" from="0" to="2" value="0.58477310749532663" weightchange="2.0969349770238008E-07" />
+    <weight layer="1" from="0" to="3" value="1.8738800453405593" weightchange="4.3969962431967424E-08" />
+    <weight layer="1" from="1" to="0" value="2.32948381074309" weightchange="-1.3596668960608076E-05" />
+    <weight layer="1" from="1" to="1" value="0.70122441998330287" weightchange="6.2999144252551132E-05" />
+    <weight layer="1" from="1" to="2" value="-0.310961463586823" weightchange="9.3501424320480958E-05" />
+    <weight layer="1" from="1" to="3" value="-2.4050213877467534" weightchange="1.96060162081999E-05" />
+    <weight layer="1" from="2" to="0" value="-4.4339655163224405" weightchange="-1.9933168435157129E-08" />
+    <weight layer="1" from="2" to="1" value="0.4394637053962494" weightchange="9.2358838572525022E-08" />
+    <weight layer="1" from="2" to="2" value="1.0034935499975028" weightchange="1.3707619456698839E-07" />
+    <weight layer="1" from="2" to="3" value="2.8101369148072979" weightchange="2.874307115608347E-08" />
+    <weight layer="1" from="3" to="0" value="2.185581238331868" weightchange="-1.3248740048986887E-05" />
+    <weight layer="1" from="3" to="1" value="0.46257797348323659" weightchange="6.1387041776837388E-05" />
+    <weight layer="1" from="3" to="2" value="1.4874948551981218" weightchange="9.1108790588417143E-05" />
+    <weight layer="1" from="3" to="3" value="-1.2404681813711533" weightchange="1.910431245264702E-05" />
+    <weight layer="2" from="0" to="0" value="5.4157169845512882" weightchange="-0.00021155499246786806" />
+    <weight layer="2" from="1" to="0" value="-1.6170673573036047" weightchange="-0.00016246892957708353" />
+    <weight layer="2" from="2" to="0" value="-2.3856347429276425" weightchange="-0.000162011096274372" />
+    <weight layer="2" from="3" to="0" value="-3.5058579794641562" weightchange="-5.7810829386557062E-06" />
+  </weights>
+</root>

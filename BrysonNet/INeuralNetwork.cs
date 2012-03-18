@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BrysonNet
 {
-    interface INeuralNetwork
+    public interface INeuralNetwork
     {
         void Initialize();
         void Pulse();
