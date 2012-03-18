@@ -10,7 +10,7 @@ namespace BrysonNetUsage
         {
             FeedForwardNeuralNetwork net = new FeedForwardNeuralNetwork(2, 40, 40, 1);
             net.Initialize();
-            net.RandomizeWeights(-1);
+            net.RandomizeWeights(-1, 1);
 
             double[][] input = new[]
                                    {
