@@ -56,7 +56,6 @@ namespace BrysonNet
         public double[] OutputSignal
         {
             get { return _signal[_hiddenLayerCount + 1]; }
-            set { _signal[_hiddenLayerCount + 2] = value; }
         }
 
         /// <summary>
