@@ -25,9 +25,9 @@ TODO's:
    [x] add possibility to load network from a XML file;
  -General: 
    [x] move NeuralNetwork class to external assembly to make it as a dll, not a console application;
-   [ ] add multithreading;
+   [>] add multithreading;
    [ ] decide to use SQLite or similar;
-   [ ] implement Self Organizing Map (SOM);
+   [ ] implement Self Organizing Feature Map (SOFM);
    [ ] implement Hopfield Neural Network;
    [ ] implement Simple Recurrent Network (SRN) Elman Style;
    [ ] implement SRN Jordan Style;

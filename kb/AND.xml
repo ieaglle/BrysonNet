@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root inputneurons="2" hiddenlayers="1" hidden0="2" outputneurons="1">
+  <weights>
+    <weight layer="0" from="0" to="0" value="7.1585116460000187" weightchange="2.3510184251379095E-06" />
+    <weight layer="0" from="0" to="1" value="1.1699675782354451" weightchange="-2.541499628046613E-05" />
+    <weight layer="0" from="1" to="0" value="-3.9918430394925717" weightchange="2.3510184251379095E-06" />
+    <weight layer="0" from="1" to="1" value="-1.9765004564252626" weightchange="-2.541499628046613E-05" />
+    <weight layer="1" from="0" to="0" value="7.82130423095832" weightchange="8.657801976127187E-06" />
+    <weight layer="1" from="1" to="0" value="-12.954381059578502" weightchange="3.700590258619587E-06" />
+  </weights>
+</root>
