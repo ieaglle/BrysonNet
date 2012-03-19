@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FeedForwardRadialBasisNeuralNetwork.cs" />
+    <Compile Include="ActivationFunctions\BipolarSigmoid.cs" />
+    <Compile Include="ActivationFunctions\IActivationFunction.cs" />
+    <Compile Include="ActivationFunctions\Sigmoid.cs" />
     <Compile Include="INeuralNetwork.cs" />
     <Compile Include="FeedForwardNeuralNetwork.cs" />
     <Compile Include="ITraining.cs" />

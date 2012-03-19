@@ -37,8 +37,12 @@ TODO's:
 
 Releases history:
 
-vNext
+19-03-2012
  - renamed "NeuralNetwork" with a proper name "FeedForwardNeuralNetwork";
+ - optimized performance up to 450 times! using jagged arrays for weights instead of dictionaries and some code optimizations;
+ - increased maximum epoches to 5000000 (10 times more);
+ - added bipolar sigmoid function;
+ - choosing activation functions is now more OOP-ish :).
 
 27-02-2012
  - changed project output type to Class Library;
