@@ -17,16 +17,8 @@ Current features:
 
 TODO's:
  -FeedForward neural network:
-   [x] add weight ranges for randomizing (e.g. -1 to 1, or -0,5 to 0,5 etc.);
-   [x] add error and previous changes arrays;
-   [x] implement back propagation training (more in future);
-   [x] add some protection from infinite loop while training;
-   [x] add possibility to save current state in XML file;
-   [x] add possibility to load network from a XML file;
+   [ ] correct adaptive backpropagation training;
  -General: 
-   [x] move NeuralNetwork class to external assembly to make it as a dll, not a console application;
-   [>] add multithreading;
-   [ ] decide to use SQLite or similar;
    [ ] implement Self Organizing Feature Map (SOFM);
    [ ] implement Hopfield Neural Network;
    [ ] implement Simple Recurrent Network (SRN) Elman Style;
@@ -36,6 +28,14 @@ TODO's:
 
 
 Releases history:
+11-04-2012
+ - partially implemented Hopfield network;
+ - partially implemented SOFM;
+ - first attempts of genetic algorithms.
+
+22-03-2012
+ - implemented adaptive backpropagation (in some cases network convergences much faster);
+ - reorganised project structure;
 
 19-03-2012
  - renamed "NeuralNetwork" with a proper name "FeedForwardNeuralNetwork";

@@ -2,7 +2,7 @@
 
 namespace BrysonNet.ActivationFunctions
 {
-    public class BipolarSigmoid : IActivationFunction
+    public class BipolarSigmoid : IFeedForwardActivation
     {
         public double Calc(double net)
         {

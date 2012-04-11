@@ -2,7 +2,7 @@
 
 namespace BrysonNet.ActivationFunctions
 {
-    public class Sigmoid : IActivationFunction
+    public class Sigmoid : IFeedForwardActivation
     {
         public double Calc(double net)
         {

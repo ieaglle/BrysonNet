@@ -43,14 +43,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivationFunctions\GaussianFunction.cs" />
+    <Compile Include="ActivationFunctions\IFeedForwardActivation.cs" />
+    <Compile Include="ActivationFunctions\IRadialBasisActivation.cs" />
+    <Compile Include="ActivationFunctions\Signum.cs" />
+    <Compile Include="ActivationFunctions\StepFunction.cs" />
+    <Compile Include="BestMatchingUnit.cs" />
+    <Compile Include="HopfieldNeuralNetwork.cs" />
+    <Compile Include="RadialBasisNeuralNetwork.cs" />
+    <Compile Include="KohonenSelfOrganisingFeatureMap.cs" />
+    <Compile Include="Training\AdaptiveBackPropagation.cs" />
+    <Compile Include="Training\BackPropagation.cs" />
     <Compile Include="ActivationFunctions\BipolarSigmoid.cs" />
     <Compile Include="ActivationFunctions\IActivationFunction.cs" />
     <Compile Include="ActivationFunctions\Sigmoid.cs" />
-    <Compile Include="INeuralNetwork.cs" />
+    <Compile Include="GeneticLearning.cs" />
+    <Compile Include="NeuralNetwork.cs" />
     <Compile Include="FeedForwardNeuralNetwork.cs" />
-    <Compile Include="ITraining.cs" />
+    <Compile Include="Training\IFeedForwardTraining.cs" />
+    <Compile Include="Training\IRadialBasisTraining.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrainingTypes.cs" />
+    <Compile Include="Training\ITraining.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Training\RadialBasisTraining.cs" />
+    <Compile Include="Training\TrainingType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

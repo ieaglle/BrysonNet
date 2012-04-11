@@ -5,4 +5,7 @@ BrysonNet/*.dotCover
 BrysonNet/NeuralNetwork1.cs
 BrysonNetUsage/bin/
 BrysonNetUsage/obj/
+BrysonNet/BrysonNet.csproj.user
+BrysonNet/BrysonNet.suo
+
 
